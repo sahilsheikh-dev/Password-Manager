@@ -1,33 +1,36 @@
 package com.begawo.passwordManager.services;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.begawo.passwordManager.model.Passwords;
+import com.begawo.passwordManager.dao.PasswordDao;
 
 public class PasswordServices {
 
-	public Passwords getPassword(String appName) {
+	PasswordDao passwordDao = new PasswordDao();
 
-		return new Passwords();
+	public boolean getPassword() {
+
+//		return new Passwords();
+		return true;
 	}
 
-	public List<Passwords> getAllPasswords() {
+	public boolean getAllPasswords() {
 
-		return new ArrayList<Passwords>();
+//		return new ArrayList<Passwords>();
+		return true;
 	}
 
-	public Passwords createPassword(Passwords password) {
+	public boolean createPassword() {
 
-		return new Passwords();
+//		return new Passwords();
+		return true;
 	}
 
-	public Passwords updatePassword(Passwords password) {
+	public boolean updatePassword() {
 
-		return new Passwords();
+//		return new Passwords();
+		return true;
 	}
 
-	public boolean deletePassword(String appName) {
+	public boolean deletePassword() {
 
 		return true;
 	}

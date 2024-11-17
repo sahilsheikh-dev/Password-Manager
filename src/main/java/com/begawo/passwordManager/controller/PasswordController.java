@@ -1,32 +1,29 @@
 package com.begawo.passwordManager.controller;
 
-import java.util.List;
-
-import com.begawo.passwordManager.model.Passwords;
 import com.begawo.passwordManager.services.PasswordServices;
 
 public class PasswordController {
 
 	PasswordServices passwordService = new PasswordServices();
 
-	public Passwords getPassword(String appName) {
-		return passwordService.getPassword(appName);
+	public boolean getPassword() {
+		return passwordService.getPassword();
 	}
 
-	public List<Passwords> getAllPasswords() {
+	public boolean getAllPasswords() {
 		return passwordService.getAllPasswords();
 	}
 
-	public Passwords createPassword(Passwords password) {
-		return passwordService.createPassword(password);
+	public boolean createPassword() {
+		return passwordService.createPassword();
 	}
 
-	public Passwords updatePassword(Passwords password) {
-		return passwordService.updatePassword(password);
+	public boolean updatePassword() {
+		return passwordService.updatePassword();
 	}
 
-	public boolean deletePassword(String appName) {
-		return passwordService.deletePassword(appName);
+	public boolean deletePassword() {
+		return passwordService.deletePassword();
 	}
 
 }
