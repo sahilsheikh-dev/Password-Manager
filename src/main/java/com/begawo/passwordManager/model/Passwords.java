@@ -16,38 +16,38 @@ public class Passwords {
 	private int passwordId;
 	@Column(name = "site_name", nullable = false)
 	private String siteName;
-	@Column(name = "site_username", nullable = false)
+	@Column(name = "site_url", nullable = true)
+	private String siteUrl;
+	@Column(name = "site_email", nullable = true)
+	private String siteEmail;
+	@Column(name = "site_username", nullable = true)
 	private String siteUsername;
 	@Column(name = "site_passworrd", nullable = false)
 	private String sitePassword;
-	@Column(name = "site_email", nullable = false)
-	private String siteEmail;
-	@Column(name = "site_url", nullable = false)
-	private String siteUrl;
 
 	@ManyToOne
 	private Users users;
 
-	public Passwords(int passwordId, String siteName, String siteUsername, String sitePassword, String siteEmail,
-			String siteUrl, Users users) {
+	public Passwords(int passwordId, String siteName, String siteUrl, String siteEmail, String siteUsername,
+			String sitePassword, Users users) {
 		super();
 		this.passwordId = passwordId;
 		this.siteName = siteName;
+		this.siteUrl = siteUrl;
+		this.siteEmail = siteEmail;
 		this.siteUsername = siteUsername;
 		this.sitePassword = sitePassword;
-		this.siteEmail = siteEmail;
-		this.siteUrl = siteUrl;
 		this.users = users;
 	}
 
-	public Passwords(String siteName, String siteUsername, String sitePassword, String siteEmail, String siteUrl,
+	public Passwords(String siteName, String siteUrl, String siteEmail, String siteUsername, String sitePassword,
 			Users users) {
 		super();
 		this.siteName = siteName;
+		this.siteUrl = siteUrl;
+		this.siteEmail = siteEmail;
 		this.siteUsername = siteUsername;
 		this.sitePassword = sitePassword;
-		this.siteEmail = siteEmail;
-		this.siteUrl = siteUrl;
 		this.users = users;
 	}
 
@@ -72,6 +72,22 @@ public class Passwords {
 		this.siteName = siteName;
 	}
 
+	public String getSiteUrl() {
+		return siteUrl;
+	}
+
+	public void setSiteUrl(String siteUrl) {
+		this.siteUrl = siteUrl;
+	}
+
+	public String getSiteEmail() {
+		return siteEmail;
+	}
+
+	public void setSiteEmail(String siteEmail) {
+		this.siteEmail = siteEmail;
+	}
+
 	public String getSiteUsername() {
 		return siteUsername;
 	}
@@ -86,22 +102,6 @@ public class Passwords {
 
 	public void setSitePassword(String sitePassword) {
 		this.sitePassword = sitePassword;
-	}
-
-	public String getSiteEmail() {
-		return siteEmail;
-	}
-
-	public void setSiteEmail(String siteEmail) {
-		this.siteEmail = siteEmail;
-	}
-
-	public String getSiteUrl() {
-		return siteUrl;
-	}
-
-	public void setSiteUrl(String siteUrl) {
-		this.siteUrl = siteUrl;
 	}
 
 	public Users getUsers() {
