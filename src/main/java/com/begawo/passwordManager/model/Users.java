@@ -43,6 +43,13 @@ public class Users {
 		this.passwords = passwords;
 	}
 
+	public Users(String userName, String userUsername, String userPassword) {
+		super();
+		this.userName = userName;
+		this.userUsername = userUsername;
+		this.userPassword = userPassword;
+	}
+
 	public Users() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -86,6 +93,10 @@ public class Users {
 
 	public void setPasswords(List<Passwords> passwords) {
 		this.passwords = passwords;
+	}
+
+	public String toString() {
+		return "User's Name - " + userName + "\nUsername - " + userUsername + "\nPassword - **********";
 	}
 
 }
