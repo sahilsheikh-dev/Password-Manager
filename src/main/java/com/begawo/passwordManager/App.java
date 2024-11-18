@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import com.begawo.passwordManager.controller.PasswordController;
 import com.begawo.passwordManager.controller.UserController;
+import com.begawo.passwordManager.services.UserSessionServices;
 
 /**
  * Hello world! - OneDrive/Desktop/projects/PasswordManager
@@ -11,21 +12,20 @@ import com.begawo.passwordManager.controller.UserController;
  */
 public class App {
 
-	static boolean userState = false;
 	static UserController userController = new UserController();
 	static PasswordController passwordController = new PasswordController();
+	static UserSessionServices userSessionService = new UserSessionServices();
 
 	public static void main(String[] args) {
 		System.out.println("Welcome to Password Manager");
-		userState = userOperationsCommandList();
+		userOperationsCommandList();
 
-		// write a logic to get session status and continue the while loop to avoid the
-		// unnecessary loop break
-		while (userState) {
-			userState = passwordOperationsCommandList();
-			if (!userState) {
-				userController.logout();
-				System.out.println("Something went wrong, User Logged Out.");
+		while (userSessionService.getCurrentSession() != null) {
+			passwordOperationsCommandList();
+
+			if (userSessionService.getCurrentSession() == null) {
+				System.out.println("User Logged Out.");
+				break;
 			}
 		}
 
@@ -36,8 +36,6 @@ public class App {
 		System.out.println("Select below Operations Commands for the User");
 		System.out.println(" 1 - LogIn");
 		System.out.println(" 2 - Create Account");
-		if (userState)
-			System.out.println(" 3 - LogOut");
 
 		Scanner sc = new Scanner(System.in);
 		int input = sc.nextInt();
@@ -63,8 +61,7 @@ public class App {
 		System.out.println(" 3 - Create Password");
 		System.out.println(" 4 - Update Password");
 		System.out.println(" 5 - Delete Password");
-		if (userState)
-			System.out.println(" 6 - LogOut");
+		System.out.println(" 6 - LogOut");
 
 		Scanner sc = new Scanner(System.in);
 		int input = sc.nextInt();

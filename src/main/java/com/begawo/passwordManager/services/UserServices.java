@@ -8,6 +8,7 @@ import com.begawo.passwordManager.model.Users;
 public class UserServices {
 
 	UserDao userDao = new UserDao();
+	UserSessionServices userSessionService = new UserSessionServices();
 
 	public boolean login() {
 		System.out.println("Please login to continue...");
@@ -17,12 +18,15 @@ public class UserServices {
 		System.out.println("Enter Password");
 		String password = sc.next();
 		sc.close();
-
-		// add session to store the current user details
-
-		if (userDao.getUserByUsernamePassword(username, password) != null) {
-			System.out.println("LoggedIn Successfully");
-			return true;
+		Users user = userDao.getUserByUsernamePassword(username, password);
+		if (user != null) {
+			if (userSessionService.addCurrentSession(user) != null) {
+				System.out.println("LoggedIn Successfully");
+				return true;
+			} else {
+				System.out.println("Error while saving the session");
+				return false;
+			}
 		} else {
 			System.out.println("LoggedIn Failed");
 			return false;
@@ -52,9 +56,13 @@ public class UserServices {
 	}
 
 	public boolean logout() {
-		// remove session to remove the current user details
-		System.out.println("You have been logged out!");
-		return false;
+		if (userSessionService.deleteCurrentSession()) {
+			System.out.println("You have been logged out!");
+			return true;
+		} else {
+			System.out.println("Error while deleting the session");
+			return false;
+		}
 	}
 
 }
