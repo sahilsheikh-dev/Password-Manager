@@ -19,10 +19,14 @@ public class App {
 		System.out.println("Welcome to Password Manager");
 		userState = userOperationsCommandList();
 
+		// write a logic to get session status and continue the while loop to avoid the
+		// unnecessary loop break
 		while (userState) {
 			userState = passwordOperationsCommandList();
-			if (!userState)
-				System.out.println("Something went wrong, User Logged Out");
+			if (!userState) {
+				userController.logout();
+				System.out.println("Something went wrong, User Logged Out.");
+			}
 		}
 
 		System.out.println("Thanks for using Password Manager, Good Bye");

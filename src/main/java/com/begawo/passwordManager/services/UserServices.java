@@ -18,6 +18,8 @@ public class UserServices {
 		String password = sc.next();
 		sc.close();
 
+		// add session to store the current user details
+
 		if (userDao.getUserByUsernamePassword(username, password) != null) {
 			System.out.println("LoggedIn Successfully");
 			return true;
@@ -50,6 +52,7 @@ public class UserServices {
 	}
 
 	public boolean logout() {
+		// remove session to remove the current user details
 		System.out.println("You have been logged out!");
 		return false;
 	}

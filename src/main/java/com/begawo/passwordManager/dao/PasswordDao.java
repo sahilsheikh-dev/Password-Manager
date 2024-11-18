@@ -10,7 +10,7 @@ import com.begawo.passwordManager.model.Passwords;
 
 public class PasswordDao {
 
-	public Passwords getPasswordByAppName(String appName) {
+	public Passwords getPasswordByPasswordId(int appId) {
 		Session session = HibernateConfig.getSession();
 
 		HibernateConfig.closeSession(session);
@@ -38,7 +38,7 @@ public class PasswordDao {
 		return new Passwords();
 	}
 
-	public boolean deletePassword(String appName, String masterPassword) {
+	public boolean deletePassword(Passwords password, String masterPassword) {
 		Session session = HibernateConfig.getSession();
 
 		HibernateConfig.closeSession(session);

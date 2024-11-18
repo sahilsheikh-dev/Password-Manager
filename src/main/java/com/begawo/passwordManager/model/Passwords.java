@@ -40,6 +40,17 @@ public class Passwords {
 		this.users = users;
 	}
 
+	public Passwords(int passwordId, String siteName, String siteUrl, String siteEmail, String siteUsername,
+			String sitePassword) {
+		super();
+		this.passwordId = passwordId;
+		this.siteName = siteName;
+		this.siteUrl = siteUrl;
+		this.siteEmail = siteEmail;
+		this.siteUsername = siteUsername;
+		this.sitePassword = sitePassword;
+	}
+
 	public Passwords(String siteName, String siteUrl, String siteEmail, String siteUsername, String sitePassword,
 			Users users) {
 		super();
@@ -49,6 +60,15 @@ public class Passwords {
 		this.siteUsername = siteUsername;
 		this.sitePassword = sitePassword;
 		this.users = users;
+	}
+
+	public Passwords(String siteName, String siteUrl, String siteEmail, String siteUsername, String sitePassword) {
+		super();
+		this.siteName = siteName;
+		this.siteUrl = siteUrl;
+		this.siteEmail = siteEmail;
+		this.siteUsername = siteUsername;
+		this.sitePassword = sitePassword;
 	}
 
 	public Passwords() {
@@ -110,6 +130,11 @@ public class Passwords {
 
 	public void setUsers(Users users) {
 		this.users = users;
+	}
+
+	public String toString() {
+		return "Site Name - " + siteName + "\nSite Email - " + siteEmail + "\nSite Username - " + siteUsername
+				+ "\nSite Password - " + sitePassword;
 	}
 
 }
