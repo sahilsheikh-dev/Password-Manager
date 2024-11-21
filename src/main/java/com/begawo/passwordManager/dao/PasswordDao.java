@@ -12,13 +12,15 @@ public class PasswordDao {
 
 	public Passwords getPasswordByPasswordId(int appId) {
 		Session session = HibernateConfig.getSession();
-
+		Passwords password = session.get(Passwords.class, appId);
 		HibernateConfig.closeSession(session);
-		return new Passwords();
+		return password;
 	}
 
 	public List<Passwords> getAllPasswords() {
 		Session session = HibernateConfig.getSession();
+
+		// write HQL query to get all passwords from database
 
 		HibernateConfig.closeSession(session);
 		return new ArrayList<Passwords>();
