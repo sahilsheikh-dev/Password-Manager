@@ -24,7 +24,7 @@ public class PasswordDao {
 		List<Passwords> passwords = new ArrayList<>();
 
 		try {
-			Query<Passwords> query = session.createQuery("FROM Passwords WHERE users.user_id = :userId",
+			Query<Passwords> query = session.createQuery("FROM Passwords WHERE users.userId = :userId",
 					Passwords.class);
 			query.setParameter("userId", userId);
 

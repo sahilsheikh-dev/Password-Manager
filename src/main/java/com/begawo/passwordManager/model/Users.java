@@ -2,6 +2,7 @@ package com.begawo.passwordManager.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,7 +24,7 @@ public class Users {
 	@Column(name = "user_password", nullable = false)
 	private String userPassword;
 
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Passwords> passwords;
 
 	public Users(int userId, String userName, String userUsername, String userPassword, List<Passwords> passwords) {
@@ -96,7 +97,8 @@ public class Users {
 	}
 
 	public String toString() {
-		return "User's Name - " + userName + "\nUsername - " + userUsername + "\nPassword - **********";
+		return "--------------------------------\nUser's Name - " + userName + "\nUsername - " + userUsername
+				+ "\nPassword - **********\n--------------------------------";
 	}
 
 }
