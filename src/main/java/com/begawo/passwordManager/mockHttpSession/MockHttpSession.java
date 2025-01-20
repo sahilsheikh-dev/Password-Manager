@@ -45,7 +45,7 @@ public class MockHttpSession implements HttpSession {
 	// out many.
 	@Override
 	public int getMaxInactiveInterval() {
-		return 0;
+		return 30 * 60; // 30 minutes
 	}
 
 	@Override
