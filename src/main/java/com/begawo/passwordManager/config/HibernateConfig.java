@@ -12,9 +12,6 @@ public class HibernateConfig {
 		SessionFactory sf = cfg.buildSessionFactory();
 		Session session = sf.openSession();
 		session.beginTransaction();
-		// execute queries like save, retrieve, update, delete with session object
-//		session.getTransaction().commit();
-//		session.close();
 		return session;
 	}
 
