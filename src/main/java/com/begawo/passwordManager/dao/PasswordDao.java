@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import com.begawo.passwordManager.config.HibernateConfig;
 import com.begawo.passwordManager.model.Passwords;
+import com.begawo.passwordManager.model.Users;
 
 public class PasswordDao {
 
@@ -17,13 +19,23 @@ public class PasswordDao {
 		return password;
 	}
 
-	public List<Passwords> getAllPasswords() {
+	public List<Passwords> getAllPasswords(int userId) {
 		Session session = HibernateConfig.getSession();
+		List<Passwords> passwords = new ArrayList<>();
 
-		// write HQL query to get all passwords from database
+		try {
+			Query<Passwords> query = session.createQuery("FROM Passwords WHERE users.user_id = :userId",
+					Passwords.class);
+			query.setParameter("userId", userId);
 
-		HibernateConfig.closeSession(session);
-		return new ArrayList<Passwords>();
+			passwords = query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			HibernateConfig.closeSession(session);
+		}
+
+		return passwords;
 	}
 
 	public Passwords createPassword(Passwords password) {
@@ -42,9 +54,18 @@ public class PasswordDao {
 
 	public boolean deletePassword(Passwords password, String masterPassword) {
 		Session session = HibernateConfig.getSession();
+		boolean isDeleted = false;
+
+		Users user = password.getUsers();
+		if (user != null && user.getUserPassword().equals(masterPassword)) {
+			session.delete(password);
+			isDeleted = true;
+		} else {
+			System.out.println("Incorrect Master Password");
+		}
 
 		HibernateConfig.closeSession(session);
-		return true;
+		return isDeleted;
 	}
 
 }

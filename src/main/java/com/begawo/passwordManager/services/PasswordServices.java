@@ -14,10 +14,11 @@ public class PasswordServices {
 	UserSessionServices userSessionService = new UserSessionServices();
 
 	public boolean getPassword() {
-		if (userSessionService.getCurrentSession() != null) {
+		Users currentUser = userSessionService.getCurrentSession();
+		if (currentUser != null) {
 			Scanner sc = new Scanner(System.in);
 			System.out.println("Enter App Number from Below App List (Enter number from 1 to N)");
-			List<Passwords> passwords = passwordDao.getAllPasswords();
+			List<Passwords> passwords = passwordDao.getAllPasswords(currentUser.getUserId());
 			for (Passwords password : passwords) {
 				if (!Utilities.isEmpty(password.getSiteName())
 						&& !Utilities.isEmpty(Integer.toString(password.getPasswordId())))
@@ -44,8 +45,9 @@ public class PasswordServices {
 	}
 
 	public boolean getAllPasswords() {
-		if (userSessionService.getCurrentSession() != null) {
-			List<Passwords> passwords = passwordDao.getAllPasswords();
+		Users currentUser = userSessionService.getCurrentSession();
+		if (currentUser != null) {
+			List<Passwords> passwords = passwordDao.getAllPasswords(currentUser.getUserId());
 
 			if (passwords.size() != 0) {
 				System.out.println("Below are the password details");
@@ -58,8 +60,8 @@ public class PasswordServices {
 				}
 				return true;
 			} else {
-				System.out.println("No Password found, please login again and add a new Password");
-				return false;
+				System.out.println("No Password found, please add a new Password");
+				return true;
 			}
 		} else {
 			System.out.println("Please login to continue");
@@ -104,7 +106,7 @@ public class PasswordServices {
 			Scanner sc = new Scanner(System.in);
 
 			System.out.println("Enter App Number from Below App List to Update (Enter number from 1 to N)");
-			List<Passwords> passwords = passwordDao.getAllPasswords();
+			List<Passwords> passwords = passwordDao.getAllPasswords(currentUser.getUserId());
 			for (Passwords password : passwords) {
 				if (!Utilities.isEmpty(password.getSiteName())
 						&& !Utilities.isEmpty(Integer.toString(password.getPasswordId())))
@@ -113,6 +115,9 @@ public class PasswordServices {
 
 			System.out.println("Enter App Number from the above list from 1 to N to Update the Password");
 			int appId = sc.nextInt();
+
+			System.out.println("Current Password Details");
+			System.out.println(passwordDao.getPasswordByPasswordId(appId));
 
 			System.out.println("Enter the Password Details");
 			System.out.println("Enter Site/App Name");
@@ -147,7 +152,7 @@ public class PasswordServices {
 		if (currentUser != null) {
 			Scanner sc = new Scanner(System.in);
 			System.out.println("Enter App Number from Below App List (Enter number from 1 to N)");
-			List<Passwords> passwords = passwordDao.getAllPasswords();
+			List<Passwords> passwords = passwordDao.getAllPasswords(currentUser.getUserId());
 			for (Passwords password : passwords) {
 				if (!Utilities.isEmpty(password.getSiteName())
 						&& !Utilities.isEmpty(Integer.toString(password.getPasswordId())))
