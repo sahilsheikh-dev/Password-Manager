@@ -9,11 +9,13 @@ public class UserDao {
 
 	public Users getUserByUsernamePassword(String username, String password) {
 		Session session = HibernateConfig.getSession();
+		Users user = new Users();
 
 		// write HQL query to get the user with username and password
+		
 
 		HibernateConfig.closeSession(session);
-		return new Users();
+		return user;
 	}
 
 	public Users addUser(Users user) {
