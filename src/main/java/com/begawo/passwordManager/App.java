@@ -1,9 +1,9 @@
 package com.begawo.passwordManager;
 
 import java.util.Scanner;
-
 import com.begawo.passwordManager.controller.PasswordController;
 import com.begawo.passwordManager.controller.UserController;
+import com.begawo.passwordManager.mockHttpSession.MockHttpSession;
 import com.begawo.passwordManager.services.UserSessionServices;
 
 /**
@@ -15,16 +15,18 @@ public class App {
 	static UserController userController = new UserController();
 	static PasswordController passwordController = new PasswordController();
 	static UserSessionServices userSessionService = new UserSessionServices();
+	static MockHttpSession session = new MockHttpSession();
 
 	public static void main(String[] args) {
 		System.out.println("Welcome to Password Manager");
+
 		userOperationsCommandList();
 
-		while (userSessionService.getCurrentSession() != null) {
+		while (userSessionService.getCurrentSession(session) != null) {
 			passwordOperationsCommandList();
 
-			if (userSessionService.getCurrentSession() == null) {
-				System.out.println("User Logged Out.");
+			if (userSessionService.getCurrentSession(session) == null) {
+				System.out.println("User Seems to be Logged Out. Please Login and Continue");
 				break;
 			}
 		}
@@ -43,14 +45,14 @@ public class App {
 
 		switch (input) {
 		case 1:
-			return userController.login();
+			return userController.login(session);
 		case 2:
 			return userController.register();
 		case 3:
-			return userController.logout();
+			return userController.logout(session);
 		default:
 			System.out.println("Invalid Input");
-			return userController.logout();
+			return userController.logout(session);
 		}
 	}
 
@@ -69,20 +71,20 @@ public class App {
 
 		switch (input) {
 		case 1:
-			return passwordController.getAllPasswords();
+			return passwordController.getAllPasswords(session);
 		case 2:
-			return passwordController.getPassword();
+			return passwordController.getPassword(session);
 		case 3:
-			return passwordController.createPassword();
+			return passwordController.createPassword(session);
 		case 4:
-			return passwordController.updatePassword();
+			return passwordController.updatePassword(session);
 		case 5:
-			return passwordController.deletePassword();
+			return passwordController.deletePassword(session);
 		case 6:
-			return userController.logout();
+			return userController.logout(session);
 		default:
 			System.out.println("Invalid Input");
-			return userController.logout();
+			return userController.logout(session);
 		}
 	}
 
