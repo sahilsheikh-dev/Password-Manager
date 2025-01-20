@@ -10,15 +10,15 @@ public class UserServices {
 
 	UserDao userDao = new UserDao();
 	UserSessionServices userSessionService = new UserSessionServices();
+	Scanner sc = new Scanner(System.in);
 
 	public boolean login(MockHttpSession session) {
 		System.out.println("Please login to continue...");
-		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter Username");
 		String username = sc.next();
 		System.out.println("Enter Password");
 		String password = sc.next();
-		sc.close();
+
 		Users user = userDao.getUserByUsernamePassword(username, password);
 		if (user != null) {
 			if (userSessionService.addCurrentSession(session, user) != null) {
@@ -29,20 +29,18 @@ public class UserServices {
 				return false;
 			}
 		} else {
-			System.out.println("LoggedIn Failed");
+			System.out.println("LoggedIn Failed dur to Incorrect usernamr/password or any other error");
 			return false;
 		}
 	}
 
 	public boolean register() {
-		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter Name");
 		String userName = sc.next();
 		System.out.println("Enter Username");
 		String userUsername = sc.next();
 		System.out.println("Enter Password");
 		String userPassword = sc.next();
-		sc.close();
 
 		Users user = userDao.addUser(new Users(userName, userUsername, userPassword));
 

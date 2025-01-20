@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -26,6 +27,7 @@ public class Passwords {
 	private String sitePassword;
 
 	@ManyToOne
+	@JoinColumn(name = "user_id", nullable = false)
 	private Users users;
 
 	public Passwords(int passwordId, String siteName, String siteUrl, String siteEmail, String siteUsername,
@@ -133,8 +135,9 @@ public class Passwords {
 	}
 
 	public String toString() {
-		return "Site Name - " + siteName + "\nSite Email - " + siteEmail + "\nSite Username - " + siteUsername
-				+ "\nSite Password - " + sitePassword;
+		return "--------------------------------\nSite Name - " + siteName + "\nSite Email - " + siteEmail
+				+ "\nSite Username - " + siteUsername + "\nSite Password - " + sitePassword
+				+ "\n--------------------------------";
 	}
 
 }

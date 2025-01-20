@@ -16,6 +16,7 @@ public class App {
 	static PasswordController passwordController = new PasswordController();
 	static UserSessionServices userSessionService = new UserSessionServices();
 	static MockHttpSession session = new MockHttpSession();
+	static Scanner sc = new Scanner(System.in);
 
 	public static void main(String[] args) {
 		System.out.println("Welcome to Password Manager");
@@ -26,12 +27,12 @@ public class App {
 			passwordOperationsCommandList();
 
 			if (userSessionService.getCurrentSession(session) == null) {
-				System.out.println("User Seems to be Logged Out. Please Login and Continue");
+				System.out.println("User Seems to be Logged Out. Please Login to Continue");
 				break;
 			}
 		}
 
-		System.out.println("Thanks for using Password Manager, Good Bye");
+		System.out.println("Thanks for using Password Manager, Please Login to Continue");
 	}
 
 	public static boolean userOperationsCommandList() {
@@ -39,9 +40,7 @@ public class App {
 		System.out.println(" 1 - LogIn");
 		System.out.println(" 2 - Create Account");
 
-		Scanner sc = new Scanner(System.in);
 		int input = sc.nextInt();
-		sc.close();
 
 		switch (input) {
 		case 1:
@@ -65,9 +64,7 @@ public class App {
 		System.out.println(" 5 - Delete Password");
 		System.out.println(" 6 - LogOut");
 
-		Scanner sc = new Scanner(System.in);
 		int input = sc.nextInt();
-		sc.close();
 
 		switch (input) {
 		case 1:
