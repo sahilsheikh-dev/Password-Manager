@@ -20,6 +20,9 @@ public class HibernateConfig {
 			session.getTransaction().commit();
 			session.close();
 		} catch (Exception e) {
+			if (session.getTransaction() != null)
+				session.getTransaction().rollback();
+
 			System.out.println("Error while closing Session");
 			System.out.println(e.getLocalizedMessage());
 			System.out.println(e.getMessage());

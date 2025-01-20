@@ -1,6 +1,7 @@
 package com.begawo.passwordManager.dao;
 
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import com.begawo.passwordManager.config.HibernateConfig;
 import com.begawo.passwordManager.model.Users;
@@ -9,12 +10,21 @@ public class UserDao {
 
 	public Users getUserByUsernamePassword(String username, String password) {
 		Session session = HibernateConfig.getSession();
-		Users user = new Users();
+		Users user = null;
 
-		// write HQL query to get the user with username and password
-		
+		try {
+			Query<Users> query = session.createQuery(
+					"FROM Users WHERE user_username = :username AND user_password = :password", Users.class);
+			query.setParameter("username", username);
+			query.setParameter("password", password);
 
-		HibernateConfig.closeSession(session);
+			user = query.uniqueResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			HibernateConfig.closeSession(session);
+		}
+
 		return user;
 	}
 
