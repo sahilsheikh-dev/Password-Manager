@@ -3,6 +3,7 @@ package com.begawo.passwordManager.services;
 import java.util.Scanner;
 
 import com.begawo.passwordManager.dao.UserDao;
+import com.begawo.passwordManager.mockHttpSession.MockHttpSession;
 import com.begawo.passwordManager.model.Users;
 
 public class UserServices {
@@ -10,7 +11,7 @@ public class UserServices {
 	UserDao userDao = new UserDao();
 	UserSessionServices userSessionService = new UserSessionServices();
 
-	public boolean login() {
+	public boolean login(MockHttpSession session) {
 		System.out.println("Please login to continue...");
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter Username");
@@ -20,7 +21,7 @@ public class UserServices {
 		sc.close();
 		Users user = userDao.getUserByUsernamePassword(username, password);
 		if (user != null) {
-			if (userSessionService.addCurrentSession(user) != null) {
+			if (userSessionService.addCurrentSession(session, user) != null) {
 				System.out.println("LoggedIn Successfully");
 				return true;
 			} else {
@@ -55,8 +56,8 @@ public class UserServices {
 		}
 	}
 
-	public boolean logout() {
-		if (userSessionService.deleteCurrentSession()) {
+	public boolean logout(MockHttpSession session) {
+		if (userSessionService.deleteCurrentSession(session)) {
 			System.out.println("You have been logged out!");
 			return true;
 		} else {

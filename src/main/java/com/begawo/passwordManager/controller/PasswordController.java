@@ -1,29 +1,30 @@
 package com.begawo.passwordManager.controller;
 
+import com.begawo.passwordManager.mockHttpSession.MockHttpSession;
 import com.begawo.passwordManager.services.PasswordServices;
 
 public class PasswordController {
 
 	PasswordServices passwordService = new PasswordServices();
 
-	public boolean getPassword() {
-		return passwordService.getPassword();
+	public boolean getPassword(MockHttpSession session) {
+		return passwordService.getPassword(session);
 	}
 
-	public boolean getAllPasswords() {
-		return passwordService.getAllPasswords();
+	public boolean getAllPasswords(MockHttpSession session) {
+		return passwordService.getAllPasswords(session);
 	}
 
-	public boolean createPassword() {
-		return passwordService.createPassword();
+	public boolean createPassword(MockHttpSession session) {
+		return passwordService.createPassword(session);
 	}
 
-	public boolean updatePassword() {
-		return passwordService.updatePassword();
+	public boolean updatePassword(MockHttpSession session) {
+		return passwordService.updatePassword(session);
 	}
 
-	public boolean deletePassword() {
-		return passwordService.deletePassword();
+	public boolean deletePassword(MockHttpSession session) {
+		return passwordService.deletePassword(session);
 	}
 
 }

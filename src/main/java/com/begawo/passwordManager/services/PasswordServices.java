@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.begawo.passwordManager.dao.PasswordDao;
+import com.begawo.passwordManager.mockHttpSession.MockHttpSession;
 import com.begawo.passwordManager.model.Passwords;
 import com.begawo.passwordManager.model.Users;
 import com.begawo.passwordManager.utilities.Utilities;
@@ -13,8 +14,8 @@ public class PasswordServices {
 	PasswordDao passwordDao = new PasswordDao();
 	UserSessionServices userSessionService = new UserSessionServices();
 
-	public boolean getPassword() {
-		Users currentUser = userSessionService.getCurrentSession();
+	public boolean getPassword(MockHttpSession session) {
+		Users currentUser = userSessionService.getCurrentSession(session);
 		if (currentUser != null) {
 			Scanner sc = new Scanner(System.in);
 			System.out.println("Enter App Number from Below App List (Enter number from 1 to N)");
@@ -44,8 +45,8 @@ public class PasswordServices {
 		}
 	}
 
-	public boolean getAllPasswords() {
-		Users currentUser = userSessionService.getCurrentSession();
+	public boolean getAllPasswords(MockHttpSession session) {
+		Users currentUser = userSessionService.getCurrentSession(session);
 		if (currentUser != null) {
 			List<Passwords> passwords = passwordDao.getAllPasswords(currentUser.getUserId());
 
@@ -69,8 +70,8 @@ public class PasswordServices {
 		}
 	}
 
-	public boolean createPassword() {
-		Users currentUser = userSessionService.getCurrentSession();
+	public boolean createPassword(MockHttpSession session) {
+		Users currentUser = userSessionService.getCurrentSession(session);
 		if (currentUser != null) {
 			Scanner sc = new Scanner(System.in);
 			System.out.println("Enter the Password Details");
@@ -100,8 +101,8 @@ public class PasswordServices {
 		}
 	}
 
-	public boolean updatePassword() {
-		Users currentUser = userSessionService.getCurrentSession();
+	public boolean updatePassword(MockHttpSession session) {
+		Users currentUser = userSessionService.getCurrentSession(session);
 		if (currentUser != null) {
 			Scanner sc = new Scanner(System.in);
 
@@ -147,8 +148,8 @@ public class PasswordServices {
 		}
 	}
 
-	public boolean deletePassword() {
-		Users currentUser = userSessionService.getCurrentSession();
+	public boolean deletePassword(MockHttpSession session) {
+		Users currentUser = userSessionService.getCurrentSession(session);
 		if (currentUser != null) {
 			Scanner sc = new Scanner(System.in);
 			System.out.println("Enter App Number from Below App List (Enter number from 1 to N)");
