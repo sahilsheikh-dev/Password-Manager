@@ -11,7 +11,6 @@ public class UserDao {
 
 	public Users getUserByUsernamePassword(String username, String password) {
 		Session session = HibernateConfig.getSession();
-
 		try {
 			Query<Users> query = session.createQuery("FROM Users WHERE user_username = :username", Users.class);
 			query.setParameter("username", username);
@@ -22,14 +21,28 @@ public class UserDao {
 				if (hashedInputPassword.equals(user.getUserPassword()))
 					return user;
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			HibernateConfig.closeSession(session);
 		}
-
 		return null;
+	}
+
+	public boolean isUsernameExists(String username) {
+		Session session = HibernateConfig.getSession();
+		try {
+			Query<Long> query = session.createQuery("SELECT COUNT(*) FROM Users WHERE userUsername = :username",
+					Long.class);
+			query.setParameter("username", username);
+			Long count = query.uniqueResult();
+			return count != null && count > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			HibernateConfig.closeSession(session);
+		}
+		return false;
 	}
 
 	public Users addUser(Users user) {
