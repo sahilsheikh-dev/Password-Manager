@@ -23,32 +23,39 @@ public class Users {
 	private String userUsername;
 	@Column(name = "user_password", nullable = false)
 	private String userPassword;
+	@Column(name = "user_salt", nullable = false)
+	private String userSalt;
 
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Passwords> passwords;
 
-	public Users(int userId, String userName, String userUsername, String userPassword, List<Passwords> passwords) {
+	public Users(int userId, String userName, String userUsername, String userPassword, String userSalt,
+			List<Passwords> passwords) {
 		super();
 		this.userId = userId;
 		this.userName = userName;
 		this.userUsername = userUsername;
 		this.userPassword = userPassword;
 		this.passwords = passwords;
+		this.userSalt = userSalt;
 	}
 
-	public Users(String userName, String userUsername, String userPassword, List<Passwords> passwords) {
+	public Users(String userName, String userUsername, String userPassword, String userSalt,
+			List<Passwords> passwords) {
 		super();
 		this.userName = userName;
 		this.userUsername = userUsername;
 		this.userPassword = userPassword;
 		this.passwords = passwords;
+		this.userSalt = userSalt;
 	}
 
-	public Users(String userName, String userUsername, String userPassword) {
+	public Users(String userName, String userUsername, String userPassword, String userSalt) {
 		super();
 		this.userName = userName;
 		this.userUsername = userUsername;
 		this.userPassword = userPassword;
+		this.userSalt = userSalt;
 	}
 
 	public Users() {
@@ -94,6 +101,14 @@ public class Users {
 
 	public void setPasswords(List<Passwords> passwords) {
 		this.passwords = passwords;
+	}
+
+	public String getUserSalt() {
+		return userSalt;
+	}
+
+	public void setUserSalt(String userSalt) {
+		this.userSalt = userSalt;
 	}
 
 	public String toString() {

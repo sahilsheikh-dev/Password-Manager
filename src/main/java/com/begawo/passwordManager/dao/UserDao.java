@@ -5,27 +5,31 @@ import org.hibernate.query.Query;
 
 import com.begawo.passwordManager.config.HibernateConfig;
 import com.begawo.passwordManager.model.Users;
+import com.begawo.passwordManager.utilities.SHA256EncryptionUtil;
 
 public class UserDao {
 
 	public Users getUserByUsernamePassword(String username, String password) {
 		Session session = HibernateConfig.getSession();
-		Users user = null;
 
 		try {
-			Query<Users> query = session.createQuery(
-					"FROM Users WHERE user_username = :username AND user_password = :password", Users.class);
+			Query<Users> query = session.createQuery("FROM Users WHERE user_username = :username", Users.class);
 			query.setParameter("username", username);
-			query.setParameter("password", password);
+			Users user = query.uniqueResult();
 
-			user = query.uniqueResult();
+			if (user != null) {
+				String hashedInputPassword = SHA256EncryptionUtil.sha256Encrypt(password, user.getUserSalt());
+				if (hashedInputPassword.equals(user.getUserPassword()))
+					return user;
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			HibernateConfig.closeSession(session);
 		}
 
-		return user;
+		return null;
 	}
 
 	public Users addUser(Users user) {

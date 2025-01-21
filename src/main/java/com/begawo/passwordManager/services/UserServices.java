@@ -5,6 +5,7 @@ import java.util.Scanner;
 import com.begawo.passwordManager.dao.UserDao;
 import com.begawo.passwordManager.mockHttpSession.MockHttpSession;
 import com.begawo.passwordManager.model.Users;
+import com.begawo.passwordManager.utilities.SHA256EncryptionUtil;
 
 public class UserServices {
 
@@ -42,7 +43,10 @@ public class UserServices {
 		System.out.println("Enter Password");
 		String userPassword = sc.next();
 
-		Users user = userDao.addUser(new Users(userName, userUsername, userPassword));
+		String salt = SHA256EncryptionUtil.generateSalt();
+		String hashedPassword = SHA256EncryptionUtil.sha256Encrypt(userPassword, salt);
+
+		Users user = userDao.addUser(new Users(userName, userUsername, hashedPassword, salt));
 
 		if (user != null) {
 			System.out.println("User Created with below Details");
