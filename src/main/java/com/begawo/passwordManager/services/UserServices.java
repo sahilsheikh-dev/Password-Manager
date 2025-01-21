@@ -38,8 +38,18 @@ public class UserServices {
 	public boolean register() {
 		System.out.println("Enter Name");
 		String userName = sc.next();
-		System.out.println("Enter Username");
-		String userUsername = sc.next();
+
+		String userUsername;
+		while (true) {
+			System.out.println("Enter Username:");
+			userUsername = sc.next();
+
+			if (userDao.isUsernameExists(userUsername))
+				System.out.println("Username already exists! Please choose a different username.");
+			else
+				break;
+		}
+
 		System.out.println("Enter Password");
 		String userPassword = sc.next();
 
