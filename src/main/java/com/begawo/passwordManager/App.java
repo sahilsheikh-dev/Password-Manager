@@ -1,10 +1,10 @@
 package com.begawo.passwordManager;
 
-import java.util.Scanner;
 import com.begawo.passwordManager.controller.PasswordController;
 import com.begawo.passwordManager.controller.UserController;
 import com.begawo.passwordManager.mockHttpSession.MockHttpSession;
 import com.begawo.passwordManager.services.UserSessionServices;
+import com.begawo.passwordManager.utilities.CommonUtil;
 
 /**
  * Hello world! - OneDrive/Desktop/projects/PasswordManager
@@ -16,7 +16,6 @@ public class App {
 	static PasswordController passwordController = new PasswordController();
 	static UserSessionServices userSessionService = new UserSessionServices();
 	static MockHttpSession session = new MockHttpSession();
-	static Scanner sc = new Scanner(System.in);
 
 	public static void main(String[] args) {
 		System.out.println("Welcome to Password Manager");
@@ -36,22 +35,27 @@ public class App {
 	}
 
 	public static boolean userOperationsCommandList() {
-		System.out.println("Select below Operations Commands for the User");
-		System.out.println(" 1 - LogIn");
-		System.out.println(" 2 - Create Account");
+		try {
+			System.out.println("Select below Operations Commands for the User");
+			System.out.println(" 1 - LogIn");
+			System.out.println(" 2 - Create Account");
 
-		int input = sc.nextInt();
+			int input = CommonUtil.getValidatedIntInput("Select an option:");
 
-		switch (input) {
-		case 1:
-			return userController.login(session);
-		case 2:
-			return userController.register();
-		case 3:
-			return userController.logout(session);
-		default:
-			System.out.println("Invalid Input");
-			return userController.logout(session);
+			switch (input) {
+			case 1:
+				return userController.login(session);
+			case 2:
+				return userController.register();
+			case 3:
+				return userController.logout(session);
+			default:
+				System.out.println("Invalid Input! Please enter a valid option.");
+				return userController.logout(session);
+			}
+		} catch (Exception e) {
+			System.out.println("An unexpected error occurred! Please try again.");
+			return false;
 		}
 	}
 
@@ -64,7 +68,7 @@ public class App {
 		System.out.println(" 5 - Delete Password");
 		System.out.println(" 6 - LogOut");
 
-		int input = sc.nextInt();
+		int input = CommonUtil.getValidatedIntInput("Select an option:");
 
 		switch (input) {
 		case 1:
