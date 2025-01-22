@@ -17,8 +17,7 @@ public class UserDao {
 			Users user = query.uniqueResult();
 
 			if (user != null) {
-				String hashedInputPassword = SHA256EncryptionUtil.sha256Encrypt(password, user.getUserSalt());
-				if (hashedInputPassword.equals(user.getUserPassword()))
+				if (SHA256EncryptionUtil.sha256Encrypt(password, user.getUserSalt()).equals(user.getUserPassword()))
 					return user;
 			}
 		} catch (Exception e) {

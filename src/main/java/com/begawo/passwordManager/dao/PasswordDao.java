@@ -2,13 +2,10 @@ package com.begawo.passwordManager.dao;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-
 import com.begawo.passwordManager.config.HibernateConfig;
 import com.begawo.passwordManager.model.Passwords;
-import com.begawo.passwordManager.model.Users;
 
 public class PasswordDao {
 
@@ -52,20 +49,11 @@ public class PasswordDao {
 		return new Passwords();
 	}
 
-	public boolean deletePassword(Passwords password, String masterPassword) {
+	public boolean deletePassword(Passwords password) {
 		Session session = HibernateConfig.getSession();
-		boolean isDeleted = false;
-
-		Users user = password.getUsers();
-		if (user != null && user.getUserPassword().equals(masterPassword)) {
-			session.delete(password);
-			isDeleted = true;
-		} else {
-			System.out.println("Incorrect Master Password");
-		}
-
+		session.delete(password);
 		HibernateConfig.closeSession(session);
-		return isDeleted;
+		return true;
 	}
 
 }

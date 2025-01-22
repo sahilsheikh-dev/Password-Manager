@@ -7,6 +7,8 @@ import com.begawo.passwordManager.dao.PasswordDao;
 import com.begawo.passwordManager.mockHttpSession.MockHttpSession;
 import com.begawo.passwordManager.model.Passwords;
 import com.begawo.passwordManager.model.Users;
+import com.begawo.passwordManager.utilities.AESUtil;
+import com.begawo.passwordManager.utilities.SHA256EncryptionUtil;
 import com.begawo.passwordManager.utilities.Utilities;
 
 public class PasswordServices {
@@ -36,8 +38,13 @@ public class PasswordServices {
 
 				Passwords password = passwordDao.getPasswordByPasswordId(appId);
 				if (password != null) {
-					System.out.println("Below is the App Password");
+					// Decrypt password using user's login password as the key
+					String decryptedPassword = AESUtil.decrypt(password.getSitePassword(),
+							currentUser.getUserPassword());
+
+					System.out.println("Below is the Current App Password Details");
 					System.out.println(password);
+					System.out.println("Password: " + decryptedPassword + "\n--------------------------------");
 					return true;
 				} else {
 					System.out.println("App Not Found or Error while getting the app name");
@@ -59,7 +66,11 @@ public class PasswordServices {
 				System.out.println("Below are the password details");
 				for (Passwords password : passwords) {
 					if (password != null) {
+						// Decrypt password using user's login password as the key
+						String decryptedPassword = AESUtil.decrypt(password.getSitePassword(),
+								currentUser.getUserPassword());
 						System.out.println(password);
+						System.out.println("Password: " + decryptedPassword + "\n--------------------------------");
 					}
 				}
 				return true;
@@ -86,8 +97,11 @@ public class PasswordServices {
 			System.out.println("Enter Site/App Password");
 			String sitePassword = sc.next();
 
+			// Encrypt password using the user's login password as the key
+			String encryptedPassword = AESUtil.encrypt(sitePassword, currentUser.getUserPassword());
+
 			Passwords password = passwordDao.createPassword(
-					new Passwords(siteName, siteUsername, siteEmail, siteUsername, sitePassword, currentUser));
+					new Passwords(siteName, siteUsername, siteEmail, siteUsername, encryptedPassword, currentUser));
 
 			if (password != null) {
 				System.out.println("Your Password has been added to the database");
@@ -117,8 +131,12 @@ public class PasswordServices {
 			System.out.println("Enter App Number from the above list from 1 to N to Update the Password");
 			int appId = sc.nextInt();
 
+			Passwords password = passwordDao.getPasswordByPasswordId(appId);
+			// Decrypt password using user's login password as the key
+			String decryptedPassword = AESUtil.decrypt(password.getSitePassword(), currentUser.getUserPassword());
 			System.out.println("Current Password Details");
-			System.out.println(passwordDao.getPasswordByPasswordId(appId));
+			System.out.println(password);
+			System.out.println("Password: " + decryptedPassword + "\n--------------------------------");
 
 			System.out.println("Enter the Password Details");
 			System.out.println("Enter Site/App Name");
@@ -130,14 +148,17 @@ public class PasswordServices {
 			System.out.println("Enter Site/App Password");
 			String sitePassword = sc.next();
 
-			Passwords password = passwordDao.updatePassword(
-					new Passwords(appId, siteName, siteUsername, siteEmail, siteUsername, sitePassword, currentUser));
+			// Encrypt password using the user's login password as the key
+			String encryptedPassword = AESUtil.encrypt(sitePassword, currentUser.getUserPassword());
 
-			if (password != null) {
+			Passwords updatePassword = passwordDao.updatePassword(new Passwords(appId, siteName, siteUsername,
+					siteEmail, siteUsername, encryptedPassword, currentUser));
+
+			if (updatePassword != null) {
 				System.out.println("Your Password has been updated to the database");
 				return true;
 			} else {
-				System.out.println("Error while adding your password");
+				System.out.println("Error while updating your password");
 				return false;
 			}
 		} else {
@@ -162,10 +183,11 @@ public class PasswordServices {
 			System.out.println("Enter your account password to delete the password");
 			String masterPassword = sc.next();
 
-			if (currentUser.getUserPassword().toString().trim().equals(masterPassword.toString().trim())) {
+			if (currentUser != null && currentUser.getUserPassword()
+					.equals(SHA256EncryptionUtil.sha256Encrypt(masterPassword, currentUser.getUserSalt()))) {
 				Passwords password = passwordDao.getPasswordByPasswordId(appId);
 				if (password != null) {
-					boolean deletedStatus = passwordDao.deletePassword(password, masterPassword);
+					boolean deletedStatus = passwordDao.deletePassword(password);
 					if (deletedStatus) {
 						System.out.println("Password Deleted");
 						return true;

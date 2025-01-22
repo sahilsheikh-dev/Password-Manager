@@ -136,8 +136,7 @@ public class Passwords {
 
 	public String toString() {
 		return "--------------------------------\nSite Name - " + siteName + "\nSite Email - " + siteEmail
-				+ "\nSite Username - " + siteUsername + "\nSite Password - " + sitePassword
-				+ "\n--------------------------------";
+				+ "\nSite Username - " + siteUsername;
 	}
 
 }
