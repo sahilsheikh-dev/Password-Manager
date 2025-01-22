@@ -1,5 +1,6 @@
 package com.begawo.passwordManager.services;
 
+import com.begawo.passwordManager.App;
 import com.begawo.passwordManager.dao.UserDao;
 import com.begawo.passwordManager.mockHttpSession.MockHttpSession;
 import com.begawo.passwordManager.model.Users;
@@ -12,28 +13,28 @@ public class UserServices {
 	UserSessionServices userSessionService = new UserSessionServices();
 
 	public boolean login(MockHttpSession session) {
-		try {
-			System.out.println("Please login to continue...");
-			String username = CommonUtil.getValidatedInput("Enter Username:");
-			String password = CommonUtil.getValidatedInput("Enter Password:");
+		while (true) {
+			try {
+				System.out.println("Please login to continue...");
+				String username = CommonUtil.getValidatedInput("Enter Username:");
+				String password = CommonUtil.getValidatedInput("Enter Password:");
 
-			Users user = userDao.getUserByUsernamePassword(username, password);
+				Users user = userDao.getUserByUsernamePassword(username, password);
 
-			if (user != null) {
-				if (userSessionService.addCurrentSession(session, user) != null) {
-					System.out.println("LoggedIn Successfully");
-					return true;
+				if (user != null) {
+					if (userSessionService.addCurrentSession(session, user) != null) {
+						System.out.println("Logged in Successfully");
+						return true;
+					} else {
+						System.out.println("Error while saving the session.");
+						return false;
+					}
 				} else {
-					System.out.println("Error while saving the session");
-					return false;
+					System.out.println("Login Failed! Incorrect username or password. Try again.");
 				}
-			} else {
-				System.out.println("LoggedIn Failed dur to Incorrect usernamr/password or any other error");
-				return false;
+			} catch (Exception e) {
+				System.out.println("Error occurred due to invalid input. Please try again.");
 			}
-		} catch (Exception e) {
-			System.out.println("Error occurred due to invalid input. Please try again.");
-			return false;
 		}
 	}
 
@@ -59,11 +60,11 @@ public class UserServices {
 			Users user = userDao.addUser(new Users(userName, userUsername, hashedPassword, salt));
 
 			if (user != null) {
-				System.out.println("User Created with below Details");
-				System.out.println(user);
+				System.out.println("User Created Successfully!");
+				App.userOperationsCommandList(); // Redirect user to login menu
 				return true;
 			} else {
-				System.out.println("Error while Creating your Account");
+				System.out.println("Error while Creating your Account.");
 				return false;
 			}
 		} catch (Exception e) {
@@ -75,9 +76,10 @@ public class UserServices {
 	public boolean logout(MockHttpSession session) {
 		if (userSessionService.deleteCurrentSession(session)) {
 			System.out.println("You have been logged out!");
+			App.userOperationsCommandList(); // Redirect user to login menu
 			return true;
 		} else {
-			System.out.println("Error while deleting the session");
+			System.out.println("Error while deleting the session.");
 			return false;
 		}
 	}
