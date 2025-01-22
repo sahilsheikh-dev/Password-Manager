@@ -35,6 +35,7 @@ public class PasswordServices {
 							"Enter App Number from the above list from 1 to N to Get the Password:");
 
 					Passwords password = passwordDao.getPasswordByPasswordId(appId);
+
 					if (password != null) {
 						// Decrypt password using user's login password as the key
 						String decryptedPassword = AESUtil.decrypt(password.getSitePassword(),
